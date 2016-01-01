@@ -11,7 +11,7 @@ int n, i, e, a, b;
 vector<int> g[MAXN];
 
 
-void join(int a, int b) {	//for undirected graph 
+inline void join(int a, int b) {	//for undirected graph 
 	g[a-1].push_back(b-1);
 	g[b-1].push_back(a-1);			
 }

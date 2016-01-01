@@ -5,7 +5,7 @@
 #include <bits/stdc++.h>
 #define MAXN 10
 
-int i, n, k, arr[MAXN];
+int i, n, k, arr[MAXN], rarr[MAXN];
 
 int bin_srch(int l, int r, int key) {
 	//return index of key if found
@@ -46,6 +46,35 @@ int upper_bound(int l, int r, int key) {
 	else return -1;
 }
 
+int search_rotated(int l, int r, int key) {
+	//return index where key is found - array rotated by any number of times
+	//else return -1
+	
+	if (l > r) return -1;
+	
+	int mid = (l+r)/2;
+	
+	if (rarr[mid] == key) return mid;
+	
+	/* if LHS rarr[l] to rarr[mid] is sorted */
+	if (rarr[l] <= rarr[mid]) {
+		/* if key lies on LHS */
+		if (key >= rarr[l] && key < rarr[mid])
+			return search_rotated(l, mid-1, key);
+			
+		else 
+			return search_rotated(mid+1, r, key);
+	}
+	
+	/* else RHS rarr[mid] to rarr[r] is sorted */
+	
+	//if key lies on rhs
+	if (key > rarr[mid] && key <= rarr[r]) 
+		return search_rotated(mid+1, r, key);
+		
+	return search_rotated(l, mid-1, key);
+}		
+
 
  
 int main() {
@@ -65,6 +94,18 @@ int main() {
 
 	if (i == -1) printf("all values are less than %d\n", k);
 	else printf("lower bount for %d is at index %d\n", k, i);
+	
+	
+	/* rotated array search - (distinct elements) */
+	n = 5;
+	rarr[0] = 6; rarr[1] = 7; rarr[2] = 9;
+	rarr[3] = 1; rarr[4] = 3; 
+	k = 9;
+	
+	i = search_rotated(0, n-1, k);
+	printf("\nrotated search\n");
+	if (i == -1) printf("not found %d\n", k);
+	else printf("found %d at index %d\n", k, i);
 
 	return 0;
 }	 
